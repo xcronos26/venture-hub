@@ -8,11 +8,17 @@ import { Label } from "@/components/ui/label";
 import { useAuth } from "@/providers/AuthProvider";
 import { useTenant } from "@/providers/TenantProvider";
 
-export const Route = createFileRoute("/login")({ component: LoginPage });
+export const Route = createFileRoute("/login")({
+  validateSearch: (search: Record<string, unknown>) => ({
+    redirect: typeof search.redirect === "string" ? search.redirect : "",
+  }),
+  component: LoginPage,
+});
 
 function LoginPage() {
   const { login } = useAuth();
   const { tenant } = useTenant();
+  const { redirect } = Route.useSearch();
   const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -24,9 +30,12 @@ function LoginPage() {
     try {
       await login(email, password);
       toast.success("Bem-vindo!");
-      navigate({ to: "/dashboard" });
-    } catch {
-      toast.error("Falha ao entrar");
+      const target = redirect.startsWith("/") && !redirect.startsWith("//") && !redirect.startsWith("/login")
+        ? redirect
+        : "/dashboard";
+      navigate({ to: target as never, replace: true });
+    } catch (error) {
+      toast.error(error instanceof Error ? error.message : "Falha ao entrar");
     } finally {
       setLoading(false);
     }

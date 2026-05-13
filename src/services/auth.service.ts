@@ -16,18 +16,27 @@ export interface LoginResponse {
 }
 
 /** Normaliza diferentes formatos de resposta do backend para { token, user } */
-function normalizeAuthResponse(data: any): LoginResponse {
-  const token: string =
-    data?.token ?? data?.access_token ?? data?.accessToken ?? data?.jwt ?? "";
+function normalizeAuthResponse(data: any, fallbackUser: Partial<AuthUser> = {}): LoginResponse {
+  const tokenValue =
+    data?.token ??
+    data?.access_token ??
+    data?.accessToken ??
+    data?.jwt ??
+    data?.data?.token ??
+    data?.data?.access_token ??
+    data?.data?.accessToken ??
+    data?.data?.jwt ??
+    "";
+  const token = typeof tokenValue === "string" ? tokenValue : String(tokenValue || "");
 
-  const rawUser = data?.user ?? data?.entrepreneur ?? data?.data?.user ?? data;
+  const rawUser = data?.user ?? data?.entrepreneur ?? data?.data?.user ?? data?.data?.entrepreneur ?? fallbackUser;
   const user: AuthUser = {
-    id: String(rawUser?.id ?? rawUser?._id ?? ""),
-    nome: rawUser?.nome ?? rawUser?.name ?? rawUser?.full_name ?? "",
-    email: rawUser?.email ?? "",
+    id: String(rawUser?.id ?? rawUser?._id ?? fallbackUser.id ?? fallbackUser.email ?? ""),
+    nome: rawUser?.nome ?? rawUser?.name ?? rawUser?.full_name ?? fallbackUser.nome ?? "",
+    email: rawUser?.email ?? fallbackUser.email ?? "",
     avatarUrl: rawUser?.avatarUrl ?? rawUser?.avatar_url ?? rawUser?.avatar ?? null,
     onboardingCompleto:
-      rawUser?.onboardingCompleto ?? rawUser?.onboarding_completed ?? false,
+      rawUser?.onboardingCompleto ?? rawUser?.onboarding_completed ?? fallbackUser.onboardingCompleto ?? false,
     ...rawUser,
   };
 
@@ -44,8 +53,7 @@ export const authService = {
   /** POST /auth/entrepreneur/login */
   async login(email: string, password: string): Promise<LoginResponse> {
     const { data } = await api.post("/auth/entrepreneur/login", { email, password });
-    console.log("[auth] login response:", data);
-    const res = normalizeAuthResponse(data);
+    const res = normalizeAuthResponse(data, { email });
     if (!res.token) {
       console.error("[auth] login OK mas sem token. Resposta:", data);
       throw new Error("Resposta de login sem token. Verifique o formato do backend.");
