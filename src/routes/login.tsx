@@ -30,7 +30,9 @@ function LoginPage() {
     try {
       await login(email, password);
       toast.success("Bem-vindo!");
-      const target = redirect && redirect !== "/login" ? redirect : "/dashboard";
+      const target = redirect.startsWith("/") && !redirect.startsWith("//") && !redirect.startsWith("/login")
+        ? redirect
+        : "/dashboard";
       navigate({ to: target as never, replace: true });
     } catch (error) {
       toast.error(error instanceof Error ? error.message : "Falha ao entrar");
