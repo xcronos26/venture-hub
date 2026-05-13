@@ -17,12 +17,18 @@ import { Route as ForgotPasswordRouteImport } from './routes/forgot-password'
 import { Route as AuthenticatedRouteImport } from './routes/_authenticated'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AuthenticatedMentoriasRouteImport } from './routes/_authenticated/mentorias'
+import { Route as AuthenticatedFerramentasRouteImport } from './routes/_authenticated/ferramentas'
 import { Route as AuthenticatedEmpresaRouteImport } from './routes/_authenticated/empresa'
 import { Route as AuthenticatedDocumentosRouteImport } from './routes/_authenticated/documentos'
 import { Route as AuthenticatedDashboardRouteImport } from './routes/_authenticated/dashboard'
 import { Route as AuthenticatedConfiguracoesRouteImport } from './routes/_authenticated/configuracoes'
 import { Route as AuthenticatedCaptacaoRouteImport } from './routes/_authenticated/captacao'
 import { Route as AuthenticatedAprendizadoRouteImport } from './routes/_authenticated/aprendizado'
+import { Route as AuthenticatedFerramentasPlanejamentoRouteImport } from './routes/_authenticated/ferramentas.planejamento'
+import { Route as AuthenticatedFerramentasPitchDeckRouteImport } from './routes/_authenticated/ferramentas.pitch-deck'
+import { Route as AuthenticatedFerramentasKanbanRouteImport } from './routes/_authenticated/ferramentas.kanban'
+import { Route as AuthenticatedFerramentasCalculadoraRouteImport } from './routes/_authenticated/ferramentas.calculadora'
+import { Route as AuthenticatedFerramentasAgendaRouteImport } from './routes/_authenticated/ferramentas.agenda'
 
 const SignupRoute = SignupRouteImport.update({
   id: '/signup',
@@ -63,6 +69,12 @@ const AuthenticatedMentoriasRoute = AuthenticatedMentoriasRouteImport.update({
   path: '/mentorias',
   getParentRoute: () => AuthenticatedRoute,
 } as any)
+const AuthenticatedFerramentasRoute =
+  AuthenticatedFerramentasRouteImport.update({
+    id: '/ferramentas',
+    path: '/ferramentas',
+    getParentRoute: () => AuthenticatedRoute,
+  } as any)
 const AuthenticatedEmpresaRoute = AuthenticatedEmpresaRouteImport.update({
   id: '/empresa',
   path: '/empresa',
@@ -95,6 +107,36 @@ const AuthenticatedAprendizadoRoute =
     path: '/aprendizado',
     getParentRoute: () => AuthenticatedRoute,
   } as any)
+const AuthenticatedFerramentasPlanejamentoRoute =
+  AuthenticatedFerramentasPlanejamentoRouteImport.update({
+    id: '/planejamento',
+    path: '/planejamento',
+    getParentRoute: () => AuthenticatedFerramentasRoute,
+  } as any)
+const AuthenticatedFerramentasPitchDeckRoute =
+  AuthenticatedFerramentasPitchDeckRouteImport.update({
+    id: '/pitch-deck',
+    path: '/pitch-deck',
+    getParentRoute: () => AuthenticatedFerramentasRoute,
+  } as any)
+const AuthenticatedFerramentasKanbanRoute =
+  AuthenticatedFerramentasKanbanRouteImport.update({
+    id: '/kanban',
+    path: '/kanban',
+    getParentRoute: () => AuthenticatedFerramentasRoute,
+  } as any)
+const AuthenticatedFerramentasCalculadoraRoute =
+  AuthenticatedFerramentasCalculadoraRouteImport.update({
+    id: '/calculadora',
+    path: '/calculadora',
+    getParentRoute: () => AuthenticatedFerramentasRoute,
+  } as any)
+const AuthenticatedFerramentasAgendaRoute =
+  AuthenticatedFerramentasAgendaRouteImport.update({
+    id: '/agenda',
+    path: '/agenda',
+    getParentRoute: () => AuthenticatedFerramentasRoute,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -109,7 +151,13 @@ export interface FileRoutesByFullPath {
   '/dashboard': typeof AuthenticatedDashboardRoute
   '/documentos': typeof AuthenticatedDocumentosRoute
   '/empresa': typeof AuthenticatedEmpresaRoute
+  '/ferramentas': typeof AuthenticatedFerramentasRouteWithChildren
   '/mentorias': typeof AuthenticatedMentoriasRoute
+  '/ferramentas/agenda': typeof AuthenticatedFerramentasAgendaRoute
+  '/ferramentas/calculadora': typeof AuthenticatedFerramentasCalculadoraRoute
+  '/ferramentas/kanban': typeof AuthenticatedFerramentasKanbanRoute
+  '/ferramentas/pitch-deck': typeof AuthenticatedFerramentasPitchDeckRoute
+  '/ferramentas/planejamento': typeof AuthenticatedFerramentasPlanejamentoRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -124,7 +172,13 @@ export interface FileRoutesByTo {
   '/dashboard': typeof AuthenticatedDashboardRoute
   '/documentos': typeof AuthenticatedDocumentosRoute
   '/empresa': typeof AuthenticatedEmpresaRoute
+  '/ferramentas': typeof AuthenticatedFerramentasRouteWithChildren
   '/mentorias': typeof AuthenticatedMentoriasRoute
+  '/ferramentas/agenda': typeof AuthenticatedFerramentasAgendaRoute
+  '/ferramentas/calculadora': typeof AuthenticatedFerramentasCalculadoraRoute
+  '/ferramentas/kanban': typeof AuthenticatedFerramentasKanbanRoute
+  '/ferramentas/pitch-deck': typeof AuthenticatedFerramentasPitchDeckRoute
+  '/ferramentas/planejamento': typeof AuthenticatedFerramentasPlanejamentoRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -141,7 +195,13 @@ export interface FileRoutesById {
   '/_authenticated/dashboard': typeof AuthenticatedDashboardRoute
   '/_authenticated/documentos': typeof AuthenticatedDocumentosRoute
   '/_authenticated/empresa': typeof AuthenticatedEmpresaRoute
+  '/_authenticated/ferramentas': typeof AuthenticatedFerramentasRouteWithChildren
   '/_authenticated/mentorias': typeof AuthenticatedMentoriasRoute
+  '/_authenticated/ferramentas/agenda': typeof AuthenticatedFerramentasAgendaRoute
+  '/_authenticated/ferramentas/calculadora': typeof AuthenticatedFerramentasCalculadoraRoute
+  '/_authenticated/ferramentas/kanban': typeof AuthenticatedFerramentasKanbanRoute
+  '/_authenticated/ferramentas/pitch-deck': typeof AuthenticatedFerramentasPitchDeckRoute
+  '/_authenticated/ferramentas/planejamento': typeof AuthenticatedFerramentasPlanejamentoRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -158,7 +218,13 @@ export interface FileRouteTypes {
     | '/dashboard'
     | '/documentos'
     | '/empresa'
+    | '/ferramentas'
     | '/mentorias'
+    | '/ferramentas/agenda'
+    | '/ferramentas/calculadora'
+    | '/ferramentas/kanban'
+    | '/ferramentas/pitch-deck'
+    | '/ferramentas/planejamento'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -173,7 +239,13 @@ export interface FileRouteTypes {
     | '/dashboard'
     | '/documentos'
     | '/empresa'
+    | '/ferramentas'
     | '/mentorias'
+    | '/ferramentas/agenda'
+    | '/ferramentas/calculadora'
+    | '/ferramentas/kanban'
+    | '/ferramentas/pitch-deck'
+    | '/ferramentas/planejamento'
   id:
     | '__root__'
     | '/'
@@ -189,7 +261,13 @@ export interface FileRouteTypes {
     | '/_authenticated/dashboard'
     | '/_authenticated/documentos'
     | '/_authenticated/empresa'
+    | '/_authenticated/ferramentas'
     | '/_authenticated/mentorias'
+    | '/_authenticated/ferramentas/agenda'
+    | '/_authenticated/ferramentas/calculadora'
+    | '/_authenticated/ferramentas/kanban'
+    | '/_authenticated/ferramentas/pitch-deck'
+    | '/_authenticated/ferramentas/planejamento'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -260,6 +338,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedMentoriasRouteImport
       parentRoute: typeof AuthenticatedRoute
     }
+    '/_authenticated/ferramentas': {
+      id: '/_authenticated/ferramentas'
+      path: '/ferramentas'
+      fullPath: '/ferramentas'
+      preLoaderRoute: typeof AuthenticatedFerramentasRouteImport
+      parentRoute: typeof AuthenticatedRoute
+    }
     '/_authenticated/empresa': {
       id: '/_authenticated/empresa'
       path: '/empresa'
@@ -302,8 +387,68 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedAprendizadoRouteImport
       parentRoute: typeof AuthenticatedRoute
     }
+    '/_authenticated/ferramentas/planejamento': {
+      id: '/_authenticated/ferramentas/planejamento'
+      path: '/planejamento'
+      fullPath: '/ferramentas/planejamento'
+      preLoaderRoute: typeof AuthenticatedFerramentasPlanejamentoRouteImport
+      parentRoute: typeof AuthenticatedFerramentasRoute
+    }
+    '/_authenticated/ferramentas/pitch-deck': {
+      id: '/_authenticated/ferramentas/pitch-deck'
+      path: '/pitch-deck'
+      fullPath: '/ferramentas/pitch-deck'
+      preLoaderRoute: typeof AuthenticatedFerramentasPitchDeckRouteImport
+      parentRoute: typeof AuthenticatedFerramentasRoute
+    }
+    '/_authenticated/ferramentas/kanban': {
+      id: '/_authenticated/ferramentas/kanban'
+      path: '/kanban'
+      fullPath: '/ferramentas/kanban'
+      preLoaderRoute: typeof AuthenticatedFerramentasKanbanRouteImport
+      parentRoute: typeof AuthenticatedFerramentasRoute
+    }
+    '/_authenticated/ferramentas/calculadora': {
+      id: '/_authenticated/ferramentas/calculadora'
+      path: '/calculadora'
+      fullPath: '/ferramentas/calculadora'
+      preLoaderRoute: typeof AuthenticatedFerramentasCalculadoraRouteImport
+      parentRoute: typeof AuthenticatedFerramentasRoute
+    }
+    '/_authenticated/ferramentas/agenda': {
+      id: '/_authenticated/ferramentas/agenda'
+      path: '/agenda'
+      fullPath: '/ferramentas/agenda'
+      preLoaderRoute: typeof AuthenticatedFerramentasAgendaRouteImport
+      parentRoute: typeof AuthenticatedFerramentasRoute
+    }
   }
 }
+
+interface AuthenticatedFerramentasRouteChildren {
+  AuthenticatedFerramentasAgendaRoute: typeof AuthenticatedFerramentasAgendaRoute
+  AuthenticatedFerramentasCalculadoraRoute: typeof AuthenticatedFerramentasCalculadoraRoute
+  AuthenticatedFerramentasKanbanRoute: typeof AuthenticatedFerramentasKanbanRoute
+  AuthenticatedFerramentasPitchDeckRoute: typeof AuthenticatedFerramentasPitchDeckRoute
+  AuthenticatedFerramentasPlanejamentoRoute: typeof AuthenticatedFerramentasPlanejamentoRoute
+}
+
+const AuthenticatedFerramentasRouteChildren: AuthenticatedFerramentasRouteChildren =
+  {
+    AuthenticatedFerramentasAgendaRoute: AuthenticatedFerramentasAgendaRoute,
+    AuthenticatedFerramentasCalculadoraRoute:
+      AuthenticatedFerramentasCalculadoraRoute,
+    AuthenticatedFerramentasKanbanRoute: AuthenticatedFerramentasKanbanRoute,
+    AuthenticatedFerramentasPitchDeckRoute:
+      AuthenticatedFerramentasPitchDeckRoute,
+    AuthenticatedFerramentasPlanejamentoRoute:
+      AuthenticatedFerramentasPlanejamentoRoute,
+  }
+
+const AuthenticatedFerramentasRouteWithChildren =
+  AuthenticatedFerramentasRoute._addFileChildren(
+    AuthenticatedFerramentasRouteChildren,
+  )
 
 interface AuthenticatedRouteChildren {
   AuthenticatedAprendizadoRoute: typeof AuthenticatedAprendizadoRoute
@@ -312,6 +457,7 @@ interface AuthenticatedRouteChildren {
   AuthenticatedDashboardRoute: typeof AuthenticatedDashboardRoute
   AuthenticatedDocumentosRoute: typeof AuthenticatedDocumentosRoute
   AuthenticatedEmpresaRoute: typeof AuthenticatedEmpresaRoute
+  AuthenticatedFerramentasRoute: typeof AuthenticatedFerramentasRouteWithChildren
   AuthenticatedMentoriasRoute: typeof AuthenticatedMentoriasRoute
 }
 
@@ -322,6 +468,7 @@ const AuthenticatedRouteChildren: AuthenticatedRouteChildren = {
   AuthenticatedDashboardRoute: AuthenticatedDashboardRoute,
   AuthenticatedDocumentosRoute: AuthenticatedDocumentosRoute,
   AuthenticatedEmpresaRoute: AuthenticatedEmpresaRoute,
+  AuthenticatedFerramentasRoute: AuthenticatedFerramentasRouteWithChildren,
   AuthenticatedMentoriasRoute: AuthenticatedMentoriasRoute,
 }
 
