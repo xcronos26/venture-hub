@@ -41,17 +41,17 @@ function persistToken(token: string) {
 }
 
 export const authService = {
-  /** POST /entrepreneur/login */
+  /** POST /auth/entrepreneur/login */
   async login(email: string, password: string): Promise<LoginResponse> {
-    const { data } = await api.post("/entrepreneur/login", { email, password });
+    const { data } = await api.post("/auth/entrepreneur/login", { email, password });
     const res = normalizeAuthResponse(data);
     persistToken(res.token);
     return res;
   },
 
-  /** POST /entrepreneur/register */
+  /** POST /auth/entrepreneur/register */
   async signup(payload: { nome: string; email: string; password: string }): Promise<LoginResponse> {
-    const { data } = await api.post("/entrepreneur/register", {
+    const { data } = await api.post("/auth/entrepreneur/register", {
       name: payload.nome,
       nome: payload.nome,
       email: payload.email,
@@ -62,27 +62,27 @@ export const authService = {
     return res;
   },
 
-  /** POST /entrepreneur/recover */
+  /** POST /auth/entrepreneur/recover */
   async forgotPassword(email: string): Promise<{ ok: true }> {
-    await api.post("/entrepreneur/recover", { email });
+    await api.post("/auth/entrepreneur/recover", { email });
     return { ok: true };
   },
 
-  /** POST /entrepreneur/change-password */
+  /** POST /auth/entrepreneur/change-password */
   async resetPassword(payload: { token?: string; currentPassword?: string; password: string }): Promise<{ ok: true }> {
-    await api.post("/entrepreneur/change-password", payload);
+    await api.post("/auth/entrepreneur/change-password", payload);
     return { ok: true };
   },
 
-  /** POST /entrepreneur/resend-verification */
+  /** POST /auth/entrepreneur/resend-verification */
   async resendVerification(email: string): Promise<{ ok: true }> {
-    await api.post("/entrepreneur/resend-verification", { email });
+    await api.post("/auth/entrepreneur/resend-verification", { email });
     return { ok: true };
   },
 
-  /** GET /entrepreneur/me */
+  /** GET /auth/entrepreneur/me */
   async me(): Promise<AuthUser> {
-    const { data } = await api.get("/entrepreneur/me");
+    const { data } = await api.get("/auth/entrepreneur/me");
     const rawUser = data?.user ?? data?.entrepreneur ?? data;
     return {
       id: String(rawUser?.id ?? rawUser?._id ?? ""),
@@ -95,10 +95,10 @@ export const authService = {
     };
   },
 
-  /** POST /entrepreneur/logout */
+  /** POST /auth/entrepreneur/logout */
   async logout(): Promise<void> {
     try {
-      await api.post("/entrepreneur/logout");
+      await api.post("/auth/entrepreneur/logout");
     } catch {
       // ignora — limpamos o token localmente de qualquer jeito
     } finally {
