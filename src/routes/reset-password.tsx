@@ -22,7 +22,7 @@ function ResetPage() {
     e.preventDefault();
     if (password !== confirm) return toast.error("Senhas não coincidem");
     try {
-      await authService.resetPassword(token, password);
+      await authService.resetPassword({ token, password });
       toast.success("Senha atualizada");
       navigate({ to: "/login" });
     } catch {
