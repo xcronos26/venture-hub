@@ -44,7 +44,12 @@ export const authService = {
   /** POST /auth/entrepreneur/login */
   async login(email: string, password: string): Promise<LoginResponse> {
     const { data } = await api.post("/auth/entrepreneur/login", { email, password });
+    console.log("[auth] login response:", data);
     const res = normalizeAuthResponse(data);
+    if (!res.token) {
+      console.error("[auth] login OK mas sem token. Resposta:", data);
+      throw new Error("Resposta de login sem token. Verifique o formato do backend.");
+    }
     persistToken(res.token);
     return res;
   },
